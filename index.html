@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://emojiapi.dev/api/v1/2764/32.png" type="image/png">
+  <title>Minha Vic</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #ff6b9d, #f2acac, #ff8fab);
+      font-family: 'Mochiy Pop P One', sans-serif;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .countdown-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .countdown-title {
+      color: #d04e4e;
+      font-size: 24px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .countdown {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .time-unit {
+      background: linear-gradient(135deg, #d04e4e, #ba1c1c);
+      color: white;
+      padding: 15px;
+      border-radius: 15px;
+      min-width: 70px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(208, 78, 78, 0.3);
+      transform: scale(1);
+      transition: transform 0.3s ease;
+    }
+
+    .time-unit:hover {
+      transform: scale(1.05);
+    }
+
+    .time-number {
+      font-size: 24px;
+      font-weight: bold;
+      display: block;
+    }
+
+    .time-label {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 5px;
+    }
+
+    input#open {
+      display: none;
+    }
+
+    .valentines-day-card {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      transform-style: preserve-3d;
+      transform: perspective(2500px);
+      transition: .3s;
+    }
+
+    .card-front {
+      position: relative;
+      background-color: #fff0f3;
+      width: 300px;
+      height: 300px;
+      transform-origin: left;
+      box-shadow: inset 100px 20px 100px rgba(0, 0, 0, .15), 30px 0 50px rgba(0, 0, 0, 0.3);
+      transition: .3s;
+      border-radius: 10px;
+    }
+
+    .card-front:before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: linear-gradient(135deg, #d04e4e, #ba1c1c);
+      top: 10px;
+      left: 10px;
+      border-radius: 5px;
+    }
+
+    .card-inside {
+      position: absolute;
+      background-color: #fff0f3;
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      box-shadow: inset 100px 20px 100px rgba(0, 0, 0, 0.22), 100px 20px 100px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .open {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      left: 0;
+      top: 0;
+      background-color: transparent;
+      z-index: 6;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    #open:checked~.card-front {
+      transform: rotateY(-155deg);
+      box-shadow: inset 100px 20px 100px rgba(0, 0, 0, .13), 30px 0 50px rgba(0, 0, 0, 0.1);
+    }
+
+    #open:checked~.card-front:before {
+      z-index: 5;
+      background-color: #fff0f3;
+      width: 300px;
+      height: 300px;
+      top: 0;
+      left: 0;
+      box-shadow: inset 100px 20px 100px rgba(0, 0, 0, .1), 30px 0 50px rgba(0, 0, 0, 0.1);
+    }
+
+    .note {
+      position: relative;
+      width: 200px;
+      height: 150px;
+      background-color: #fff0f3;
+      top: 75px;
+      left: 50px;
+      color: #333;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.3));
+      border-radius: 10px;
+    }
+
+    .note:before,
+    .note:after {
+      position: absolute;
+      content: "";
+      background-color: #ba1c1c;
+      width: 40px;
+      height: 40px;
+    }
+
+    .note:before {
+      transform: rotate(-45deg);
+      top: -20px;
+      left: 80px;
+    }
+
+    .note:after {
+      border-radius: 50%;
+      top: -35px;
+      left: 65px;
+      box-shadow: 30px 0 #ba1c1c;
+    }
+
+    .photo-section {
+      width: 140px;
+      height: 280px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .photo-container {
+      width: 120px;
+      height: 160px;
+      border: 3px solid #d04e4e;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .photo-placeholder {
+      color: #999;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.2;
+      padding: 10px;
+    }
+
+    .couple-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .photo-upload {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      background: #d04e4e;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .photo-upload:hover {
+      background: #ba1c1c;
+      transform: scale(1.1);
+    }
+
+    .photo-upload input {
+      display: none;
+    }
+
+    .message-section {
+      width: 160px;
+      height: 280px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .text-one {
+      position: absolute;
+      color: #333;
+      font-size: 28px;
+      top: 20px;
+      width: 300px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .text-one:before,
+    .text-one:after {
+      position: absolute;
+      left: 5px;
+      text-align: center;
+      width: 290px;
+      line-height: 1.2;
+    }
+
+    .text-one:before {
+      content: "Feliz Dia das Namoradas";
+      top: 35px;
+      color: #d04e4e;
+      font-size: 24px;
+    }
+
+    .heart {
+      position: relative;
+      background-color: #d04e4e;
+      height: 60px;
+      width: 60px;
+      top: 160px;
+      left: 120px;
+      transform: rotate(-45deg);
+      animation: .8s beat infinite;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: "";
+      background-color: #d04e4e;
+      border-radius: 50%;
+      height: 60px;
+      width: 60px;
+      position: absolute;
+    }
+
+    .heart:before {
+      top: -30px;
+      left: 0;
+    }
+
+    .heart:after {
+      left: 30px;
+      top: 0;
+    }
+
+    .smile {
+      position: absolute;
+      width: 30px;
+      height: 15px;
+      background-color: #333;
+      z-index: 1;
+      border-radius: 0 0 100px 100px;
+      top: 180px;
+      left: 135px;
+      overflow: hidden;
+    }
+
+    .smile:before {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      background-color: #fff0f3;
+      top: 5px;
+      left: 5px;
+    }
+
+    .eyes {
+      position: absolute;
+      border-radius: 50%;
+      background-color: #333;
+      width: 10px;
+      height: 10px;
+      z-index: 1;
+      top: 170px;
+      left: 165px;
+      box-shadow: -40px 0 #333;
+      transform-origin: 50%;
+      animation: close 2s infinite;
+    }
+
+    .sparkles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      animation: sparkle 3s infinite;
+    }
+
+    .music-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+      max-width: 200px;
+    }
+
+    .music-btn {
+      background: linear-gradient(135deg, #d04e4e, #ba1c1c);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-family: 'Mochiy Pop P One', sans-serif;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(208, 78, 78, 0.3);
+    }
+
+    .music-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(208, 78, 78, 0.4);
+    }
+
+    .music-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 5px;
+      border-radius: 5px;
+      background: #ddd;
+      outline: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .volume-slider:hover {
+      opacity: 1;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #d04e4e;
+      cursor: pointer;
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #d04e4e;
+      cursor: pointer;
+      border: none;
+    }
+
+    .music-info {
+      font-size: 10px;
+      color: #666;
+      text-align: center;
+      max-width: 180px;
+      word-wrap: break-word;
+    }
+
+    .music-controls.playing {
+      border: 2px solid #d04e4e;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      50% {
+        box-shadow: 0 10px 30px rgba(208, 78, 78, 0.4);
+      }
+    }
+
+    @keyframes close {
+
+      0%,
+      100% {
+        transform: scale(1, .05);
+      }
+
+      5%,
+      95% {
+        transform: scale(1, 1);
+      }
+    }
+
+    @keyframes beat {
+
+      0%,
+      40%,
+      100% {
+        transform: scale(1) rotate(-45deg);
+      }
+
+      25%,
+      60% {
+        transform: scale(1.1) rotate(-45deg);
+      }
+    }
+
+    @keyframes sparkle {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .countdown {
+        gap: 10px;
+      }
+
+      .time-unit {
+        min-width: 60px;
+        padding: 10px;
+      }
+
+      .time-number {
+        font-size: 20px;
+      }
+
+      .countdown-title {
+        font-size: 20px;
+      }
+
+      .valentines-day-card {
+        width: 250px;
+        height: 250px;
+      }
+
+      .card-front,
+      .card-inside,
+      .open {
+        width: 250px;
+        height: 250px;
+      }
+
+      .music-controls {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        max-width: 150px;
+        padding: 10px;
+      }
+
+      .music-btn {
+        font-size: 10px;
+        padding: 6px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- controles de música -->
+  <div class="music-controls">
+    <button id="playPauseBtn" class="music-btn">
+      ▶️ Tocar Serenata
+    </button>
+    <button id="volumeBtn" class="music-btn">
+      🔊
+    </button>
+    <input type="range" id="volumeSlider" min="0" max="100" value="30" class="volume-slider">
+    <div id="musicInfo" class="music-info">🎵 Volume</div>
+  </div>
+
+  <!-- música embutida -->
+  <audio id="backgroundMusic" loop preload="auto">
+    <source src="https://www.soundjay.com/misc/sounds/beep-07a.wav" type="audio/wav">
+    <!-- <source src="./musica-romantica.mp3" type="audio/mpeg"> -->
+    Seu navegador não suporta o elemento de áudio :/.
+  </audio>
+
+  <div class="countdown-container">
+    <div class="countdown-title">Contagem regressiva para te encontrar ❤️</div>
+    <div class="countdown">
+      <div class="time-unit">
+        <span class="time-number" id="days">00</span>
+        <div class="time-label">Dias</div>
+      </div>
+      <div class="time-unit">
+        <span class="time-number" id="hours">00</span>
+        <div class="time-label">Horas</div>
+      </div>
+      <div class="time-unit">
+        <span class="time-number" id="minutes">00</span>
+        <div class="time-label">Minutos</div>
+      </div>
+      <div class="time-unit">
+        <span class="time-number" id="seconds">00</span>
+        <div class="time-label">Segundos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="valentines-day-card">
+    <input id="open" type="checkbox">
+    <label class="open" for="open"></label>
+    <div class="card-front">
+      <div class="note">Clique para Abrir</div>
+    </div>
+
+    <div class="card-inside">
+      <div class="text-one">💕</div>
+      <div class="heart"></div>
+      <div class="smile"></div>
+      <div class="eyes"></div>
+    </div>
+  </div>
+
+  <script>
+    // variáveis para controle de música
+    let isPlaying = false;
+
+    // elementos de controle da música
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const volumeBtn = document.getElementById('volumeBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const musicInfo = document.getElementById('musicInfo');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicControls = document.querySelector('.music-controls');
+
+    // configura o volume inicial
+    backgroundMusic.volume = volumeSlider.value / 100;
+
+    // função de play/pause
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        backgroundMusic.pause();
+        playPauseBtn.textContent = '▶️ Tocar Serenata';
+        isPlaying = false;
+        musicControls.classList.remove('playing');
+      } else {
+        // tenta tocar a música
+        backgroundMusic.play().then(() => {
+          playPauseBtn.textContent = '⏸️ Pausar';
+          isPlaying = true;
+          musicControls.classList.add('playing');
+        }).catch(error => {
+          console.log('Erro ao reproduzir música:', error);
+          // se não conseguir tocar automaticamente, mostrar mensagem
+          musicInfo.textContent = '🎵 Clique para ativar a serenata';
+        });
+      }
+    });
+
+    // controle de volume
+    volumeSlider.addEventListener('input', (e) => {
+      backgroundMusic.volume = e.target.value / 100;
+      updateVolumeIcon(e.target.value);
+    });
+
+    volumeBtn.addEventListener('click', () => {
+      if (backgroundMusic.volume > 0) {
+        backgroundMusic.volume = 0;
+        volumeSlider.value = 0;
+        volumeBtn.textContent = '🔇';
+      } else {
+        backgroundMusic.volume = 0.3;
+        volumeSlider.value = 30;
+        volumeBtn.textContent = '🔊';
+      }
+    });
+
+    function updateVolumeIcon(volume) {
+      if (volume == 0) {
+        volumeBtn.textContent = '🔇';
+      } else if (volume < 50) {
+        volumeBtn.textContent = '🔉';
+      } else {
+        volumeBtn.textContent = '🔊';
+      }
+    }
+
+    // eventos da música
+    backgroundMusic.addEventListener('ended', () => {
+      // como está em loop, não deveria acontecer, mas por segurança
+      playPauseBtn.textContent = '▶️ Tocar Serenata';
+      isPlaying = false;
+      musicControls.classList.remove('playing');
+    });
+
+    backgroundMusic.addEventListener('error', () => {
+      console.log('Erro ao carregar a música');
+      musicInfo.textContent = '🎵 Música não disponível';
+    });
+
+    backgroundMusic.addEventListener('loadeddata', () => {
+      console.log('Música carregada com sucesso');
+      musicInfo.textContent = '🎵 Serenata Pronta';
+    });
+
+    // tentar tocar automaticamente quando a página carregar (pode não funcionar por causa das políticas do navegador)
+    window.addEventListener('load', () => {
+      // aguarda um pouco antes de tentar tocar
+      setTimeout(() => {
+        backgroundMusic.play().then(() => {
+          playPauseBtn.textContent = '⏸️ Pausar';
+          isPlaying = true;
+          musicControls.classList.add('playing');
+        }).catch(() => {
+          // falha silenciosa - namorada precisará clicar para ativar
+          console.log('Reprodução automática bloqueada pelo navegador');
+        });
+      }, 1000);
+    });
+
+    // função para criar efeitos de brilhos
+    function createSparkles() {
+      const sparklesContainer = document.getElementById('sparkles');
+
+      for (let i = 0; i < 20; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = Math.random() * 100 + '%';
+        sparkle.style.animationDelay = Math.random() * 3 + 's';
+        sparklesContainer.appendChild(sparkle);
+      }
+    }
+
+    // função para atualizar o contador
+    function updateCountdown() {
+      // data alvo: 17 de junho de 2025 às 20:00 (horário de brasília)
+      const targetDate = new Date('2025-06-17T20:00:00-03:00').getTime();
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = days.toString().padStart(2, '0');
+        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+      } else {
+        // se a data já chegou, parar o contador
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+
+        // mostrar mensagem especial
+        document.querySelector('.countdown-title').textContent = '🎉 Nosso reencontro aconteceu! Te amo 💕';
+      }
+    }
+
+    // inicializar os efeitos
+    createSparkles();
+    updateCountdown();
+
+    // atualiza o contador a cada segundo
+    setInterval(updateCountdown, 1000);
+
+    // adiciona o efeito sonoro de coração batendo (apenas visual)
+    document.querySelector('.heart').addEventListener('animationiteration', function () {
+      this.style.filter = 'brightness(1.2)';
+      setTimeout(() => {
+        this.style.filter = 'brightness(1)';
+      }, 200);
+    });
+
+    // inicializa o volume
+    updateVolumeIcon(volumeSlider.value);
+  </script>
+</body>
+
+</html>
