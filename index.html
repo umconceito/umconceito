@@ -140,11 +140,16 @@
     #open:checked~.card-front:before {
       z-index: 5;
       background-color: #fff0f3;
+      background-image: url('nossa-foto.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       width: 300px;
       height: 300px;
       top: 0;
       left: 0;
       box-shadow: inset 100px 20px 100px rgba(0, 0, 0, .1), 30px 0 50px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
     }
 
     .note {
@@ -576,8 +581,7 @@
 
   <!-- música embutida -->
   <audio id="backgroundMusic" loop preload="auto">
-    <source src="https://www.soundjay.com/misc/sounds/beep-07a.wav" type="audio/wav">
-    <!-- <source src="./musica-romantica.mp3" type="audio/mpeg"> -->
+    <source src="./musica-romantica.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio :/.
   </audio>
 
