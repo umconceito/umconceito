@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="https://emojiapi.dev/api/v1/2764/32.png" type="image/png">
-  <title>Minha Vic</title>
+  <title>Numerix da Minha Vic</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
   <style>
     * {
@@ -16,13 +16,16 @@
 
     body {
       min-height: 100vh;
-      background:
-        radial-gradient(ellipse at top, rgba(255, 248, 240, 0.9) 0%, transparent 50%),
+      background: radial-gradient(ellipse at top, rgba(255, 248, 240, 0.9) 0%, transparent 50%),
         radial-gradient(ellipse at bottom right, rgba(238, 228, 218, 0.6) 0%, transparent 50%),
         linear-gradient(135deg, #f8f4f0 0%, #f0ebe5 30%, #e8ddd4 60%, #ddd0c3 100%);
       font-family: 'Cormorant Garamond', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       position: relative;
-      overflow-x: hidden;
     }
 
     body::before {
@@ -32,10 +35,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image:
-        radial-gradient(circle at 15% 30%, rgba(139, 119, 101, 0.04) 0%, transparent 40%),
-        radial-gradient(circle at 85% 70%, rgba(160, 139, 118, 0.04) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(139, 119, 101, 0.02) 0%, transparent 60%);
+      background-image: radial-gradient(circle at 15% 30%, rgba(139, 119, 101, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(160, 139, 118, 0.04) 0%, transparent 40%);
       pointer-events: none;
       z-index: 1;
       animation: float 20s ease-in-out infinite;
@@ -53,582 +54,451 @@
       }
     }
 
+    /* Controles de Música Fixos */
+    .music-controls-fixed {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(139, 119, 101, 0.2);
+      border: 1px solid rgba(139, 119, 101, 0.1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 200px;
+    }
+
+    .music-title-small {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      color: #8b7765;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .play-btn-small {
+      background: linear-gradient(135deg, #d4c4a8, #c4b49d);
+      border: 1px solid #a08b76;
+      color: #8b7765;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(139, 119, 101, 0.15);
+    }
+
+    .play-btn-small:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(139, 119, 101, 0.25);
+    }
+
+    .volume-control-small {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .volume-btn-small {
+      background: none;
+      border: none;
+      color: #8b7765;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 5px;
+    }
+
+    .volume-btn-small:hover {
+      color: #a08b76;
+      transform: scale(1.1);
+    }
+
+    .volume-slider-small {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(139, 119, 101, 0.2);
+      outline: none;
+    }
+
+    .volume-slider-small::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b7765, #a08b76);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(139, 119, 101, 0.3);
+    }
+
+    /* Container Principal */
     .container {
       position: relative;
       z-index: 10;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 20px;
-      min-height: 100vh;
+      max-width: 800px;
+      width: 100%;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      gap: 30px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 80px;
-      position: relative;
-    }
-
-    .header::before {
-      content: '♥';
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2rem;
-      color: rgba(139, 119, 101, 0.3);
-      animation: heartbeat 2s ease-in-out infinite;
-    }
-
-    @keyframes heartbeat {
-
-      0%,
-      100% {
-        transform: translateX(-50%) scale(1);
-      }
-
-      50% {
-        transform: translateX(-50%) scale(1.1);
-      }
+      margin-bottom: 20px;
     }
 
     .main-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 5rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
       color: #8b7765;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       font-weight: 700;
-      letter-spacing: -2px;
+      letter-spacing: -1px;
       text-shadow: 0 4px 8px rgba(139, 119, 101, 0.1);
-      position: relative;
     }
 
-    .main-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #d4c4a8, transparent);
-    }
-
-    .jane-austen-quote {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.1rem, 3vw, 1.4rem);
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
       color: #a08b76;
       font-style: italic;
-      font-weight: 400;
-      max-width: 700px;
-      margin: 0 auto 15px;
-      line-height: 1.8;
-      text-align: center;
-      position: relative;
-      padding: 0 40px;
     }
 
-    .jane-austen-quote::before,
-    .jane-austen-quote::after {
-      content: '"';
-      font-size: 3rem;
-      color: rgba(139, 119, 101, 0.2);
-      position: absolute;
+    /* Seção do Jogo */
+    .game-section {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(139, 119, 101, 0.15);
+      border: 1px solid rgba(139, 119, 101, 0.1);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .game-title {
       font-family: 'Playfair Display', serif;
-    }
-
-    .jane-austen-quote::before {
-      top: -10px;
-      left: 10px;
-    }
-
-    .jane-austen-quote::after {
-      bottom: -40px;
-      right: 10px;
-    }
-
-    .quote-author {
-      font-size: 0.9rem;
-      color: #b8a894;
-      font-style: italic;
-      margin-top: 10px;
-    }
-
-    .main-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-      margin-bottom: 60px;
-    }
-
-    .photo-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .photo-frame {
-      position: relative;
-      width: 320px;
-      height: 400px;
-      transform: rotate(-1.5deg);
-      transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      cursor: pointer;
+      font-size: 2rem;
+      color: #8b7765;
+      text-align: center;
       margin-bottom: 30px;
+      font-weight: 700;
     }
 
-    .photo-frame:hover {
+    .numbers-list {
+      background: rgba(139, 119, 101, 0.08);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 4px solid #c4b49d;
+    }
+
+    .numbers-list h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #8b7765;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .number-group {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      color: #8b7765;
+    }
+
+    .number-group strong {
+      color: #a08b76;
+      font-weight: 600;
+    }
+
+    /* Grade do Jogo */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+
+    .grid-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .grid-cell.blocked {
+      background: linear-gradient(135deg, #8b7765, #6d5d4d);
+      cursor: not-allowed;
+    }
+
+    .grid-cell input {
+      width: 100%;
+      height: 100%;
+      border: 2px solid #d4c4a8;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      color: #8b7765;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .grid-cell input:focus {
+      outline: none;
+      border-color: #a08b76;
+      box-shadow: 0 0 0 3px rgba(139, 119, 101, 0.1);
+      transform: scale(1.05);
+    }
+
+    .grid-cell input[readonly] {
+      background: linear-gradient(135deg, #e8ddd4, #ddd0c3);
+      color: #6d5d4d;
+      font-weight: 700;
+      cursor: not-allowed;
+      border-color: #c4b49d;
+    }
+
+    .grid-cell input.correct {
+      border-color: #7ab87a;
+      background: rgba(122, 184, 122, 0.1);
+    }
+
+    .grid-cell input.incorrect {
+      border-color: #d9534f;
+      background: rgba(217, 83, 79, 0.1);
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
+    }
+
+    .number-group.completed {
+      text-decoration: line-through;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    .complete-btn {
+      background: linear-gradient(135deg, #d4c4a8, #c4b49d);
+      border: 2px solid #a08b76;
+      color: #8b7765;
+      padding: 15px 40px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(139, 119, 101, 0.2);
+      display: block;
+      margin: 0 auto;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .complete-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(139, 119, 101, 0.3);
+      background: linear-gradient(135deg, #c4b49d, #b4a491);
+    }
+
+    /* Seção de Vitória e Countdown */
+    .victory-section {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(139, 119, 101, 0.15);
+      border: 1px solid rgba(139, 119, 101, 0.1);
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .victory-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #8b7765;
+      margin-bottom: 30px;
+      font-weight: 700;
+      animation: celebration 0.6s ease-out;
+    }
+
+    @keyframes celebration {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .photo-frame-small {
+      width: 200px;
+      height: 250px;
+      margin: 0 auto 30px;
+      transform: rotate(-2deg);
+      transition: all 0.6s ease;
+    }
+
+    .photo-frame-small:hover {
       transform: rotate(0deg) scale(1.05);
     }
 
-    .photo-container {
+    .photo-container-small {
       width: 100%;
       height: 100%;
       background: linear-gradient(145deg, #ffffff 0%, #fefefe 100%);
-      padding: 18px;
+      padding: 12px;
       border-radius: 4px;
-      box-shadow:
-        0 8px 32px rgba(139, 119, 101, 0.15),
-        0 20px 40px rgba(139, 119, 101, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      position: relative;
+      box-shadow: 0 8px 32px rgba(139, 119, 101, 0.15);
     }
 
-    .photo-container::before {
-      content: '';
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      bottom: 12px;
-      border: 1px solid rgba(139, 119, 101, 0.1);
-      border-radius: 2px;
-      pointer-events: none;
-    }
-
-    .photo {
+    .photo-small {
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, #f5f1eb 0%, #ede7de 100%);
       border-radius: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      color: #a08b76;
-      text-align: center;
-      font-style: italic;
       background-image: url('nossa-foto.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .photo::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .photo-frame:hover .photo::after {
-      opacity: 1;
-    }
-
-    .photo-caption {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: #8b7765;
-      text-align: center;
-      font-style: italic;
-      font-weight: 400;
-      max-width: 280px;
-      line-height: 1.6;
-    }
-
-    .countdown-section {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 40px 35px;
-      border-radius: 12px;
-      box-shadow:
-        0 10px 40px rgba(139, 119, 101, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(139, 119, 101, 0.08);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .countdown-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #d4c4a8, #c4b49d, #d4c4a8);
     }
 
     .countdown-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-size: 1.8rem;
       color: #8b7765;
-      text-align: center;
-      margin-bottom: 35px;
-      font-weight: 700;
-      position: relative;
-    }
-
-    .countdown-title::after {
-      content: '✨';
-      position: absolute;
-      top: -5px;
-      right: -30px;
-      font-size: 1.2rem;
-      animation: sparkle 3s ease-in-out infinite;
-    }
-
-    @keyframes sparkle {
-
-      0%,
-      100% {
-        opacity: 0.5;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.2);
-      }
+      margin-bottom: 25px;
+      font-weight: 600;
     }
 
     .countdown-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
     }
 
     .time-box {
       background: rgba(255, 255, 255, 0.9);
-      padding: 25px 20px;
-      border-radius: 8px;
-      text-align: center;
-      border: 1px solid rgba(139, 119, 101, 0.1);
-      box-shadow: 0 6px 20px rgba(139, 119, 101, 0.08);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .time-box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(139, 119, 101, 0.05), transparent);
-      transition: left 0.6s ease;
-    }
-
-    .time-box:hover::before {
-      left: 100%;
+      padding: 20px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(139, 119, 101, 0.15);
+      box-shadow: 0 4px 15px rgba(139, 119, 101, 0.1);
+      transition: all 0.3s ease;
     }
 
     .time-box:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(139, 119, 101, 0.15);
+      box-shadow: 0 6px 20px rgba(139, 119, 101, 0.2);
     }
 
     .time-number {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-size: 2.5rem;
       font-weight: 700;
       color: #8b7765;
       display: block;
       line-height: 1;
-      position: relative;
-      z-index: 1;
     }
 
     .time-label {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #a08b76;
-      margin-top: 10px;
-      font-weight: 500;
+      margin-top: 8px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .music-section {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(8px);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow:
-        0 10px 40px rgba(139, 119, 101, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(139, 119, 101, 0.08);
-      text-align: center;
-      margin-bottom: 50px;
-      position: relative;
-    }
-
-    .music-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      color: #8b7765;
-      margin-bottom: 30px;
-      font-weight: 700;
-      position: relative;
-    }
-
-    .music-title::before {
-      content: '♪';
-      position: absolute;
-      left: -40px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: rgba(139, 119, 101, 0.4);
-      animation: musical-note 2s ease-in-out infinite;
-    }
-
-    @keyframes musical-note {
-
-      0%,
-      100% {
-        transform: translateY(-50%) rotate(-10deg);
-      }
-
-      50% {
-        transform: translateY(-60%) rotate(10deg);
-      }
-    }
-
-    .music-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      align-items: center;
-    }
-
-    .play-btn {
-      background: linear-gradient(135deg, #d4c4a8, #c4b49d);
-      border: 1px solid #a08b76;
-      color: #8b7765;
-      padding: 18px 45px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
       font-weight: 500;
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      box-shadow: 0 6px 20px rgba(139, 119, 101, 0.15);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      position: relative;
-      overflow: hidden;
     }
 
-    .play-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.6s ease;
-    }
-
-    .play-btn:hover::before {
-      left: 100%;
-    }
-
-    .play-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(139, 119, 101, 0.25);
-      background: linear-gradient(135deg, #c4b49d, #b4a491);
-    }
-
-    .volume-control {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-      max-width: 300px;
-    }
-
-    .volume-btn {
-      background: none;
-      border: none;
-      color: #8b7765;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      padding: 8px;
-      border-radius: 50%;
-    }
-
-    .volume-btn:hover {
-      color: #a08b76;
-      transform: scale(1.2);
-      background: rgba(139, 119, 101, 0.1);
-    }
-
-    .volume-slider {
-      flex: 1;
-      -webkit-appearance: none;
-      height: 8px;
-      border-radius: 4px;
-      background: rgba(139, 119, 101, 0.2);
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    .volume-slider:hover {
-      background: rgba(139, 119, 101, 0.3);
-    }
-
-    .volume-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #8b7765, #a08b76);
-      cursor: pointer;
-      box-shadow: 0 3px 10px rgba(139, 119, 101, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .volume-slider::-webkit-slider-thumb:hover {
-      background: linear-gradient(135deg, #a08b76, #b8a894);
-      transform: scale(1.2);
-      box-shadow: 0 4px 15px rgba(139, 119, 101, 0.4);
-    }
-
-    .love-message {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(6px);
-      padding: 45px;
-      border-radius: 12px;
-      border: 1px solid rgba(139, 119, 101, 0.08);
-      box-shadow: 0 10px 40px rgba(139, 119, 101, 0.08);
-      text-align: center;
-      margin-top: auto;
-      position: relative;
-    }
-
-    .love-message::before {
-      content: '∞';
-      position: absolute;
-      top: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2rem;
-      color: rgba(139, 119, 101, 0.3);
-      background: rgba(255, 255, 255, 0.9);
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-    }
-
-    .love-text {
-      font-size: clamp(1.2rem, 2.5vw, 1.4rem);
-      line-height: 1.8;
-      color: #8b7765;
-      font-style: italic;
-      max-width: 700px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    /* Música de fundo */
-    audio {
+    .hidden {
       display: none;
     }
 
     /* Responsividade */
     @media (max-width: 768px) {
-      .container {
-        padding: 40px 15px;
+      .music-controls-fixed {
+        top: 10px;
+        right: 10px;
+        min-width: 160px;
+        padding: 12px 15px;
       }
 
-      .main-content {
-        grid-template-columns: 1fr;
-        gap: 50px;
+      .game-section,
+      .victory-section {
+        padding: 25px 20px;
       }
 
-      .photo-frame {
-        width: 280px;
-        height: 350px;
+      .grid-container {
+        gap: 6px;
+      }
+
+      .grid-cell input {
+        font-size: 1.2rem;
       }
 
       .countdown-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-      }
-
-      .time-box {
-        padding: 20px 12px;
-      }
-
-      .music-section {
-        padding: 30px 25px;
-      }
-
-      .love-message {
-        padding: 35px 25px;
-      }
-
-      .jane-austen-quote {
-        padding: 0 30px;
-      }
-
-      .header {
-        margin-bottom: 60px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
       }
     }
 
     @media (max-width: 480px) {
-      .countdown-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
+      .music-controls-fixed {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 300px;
       }
 
-      .photo-frame {
-        width: 240px;
-        height: 300px;
+      .main-title {
+        font-size: 2rem;
       }
 
-      .volume-control {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .jane-austen-quote {
-        padding: 0 20px;
-      }
-
-      .music-title::before {
-        display: none;
+      .complete-btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -638,133 +508,131 @@
   <!-- Música de fundo -->
   <audio id="backgroundMusic" loop preload="auto">
     <source src="./musica-romantica.mp3" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
   </audio>
 
+  <!-- Controles de Música Fixos -->
+  <div class="music-controls-fixed">
+    <div class="music-title-small">♪ Nosso Som</div>
+    <button id="playBtn" class="play-btn-small">🎵 Tocar</button>
+    <div class="volume-control-small">
+      <button id="volumeBtn" class="volume-btn-small">🔊</button>
+      <input type="range" id="volumeSlider" class="volume-slider-small" min="0" max="100" value="30">
+    </div>
+  </div>
+
   <div class="container">
-    <!-- Cabeçalho renovado -->
+    <!-- Cabeçalho -->
     <div class="header">
-      <h1 class="main-title">Minha Vic</h1>
-      <p class="jane-austen-quote">
-        Nunca houve dois corações mais abertos,<br>
-        Nem gostos mais semelhantes,<br>
-        Ou sentimentos mais em sintonia!
-      </p>
-      <div class="quote-author">— Jane Austen</div>
+      <h1 class="main-title">Numerix</h1>
+      <p class="subtitle">Resolva o enigma para revelar a surpresa</p>
     </div>
 
-    <!-- Conteúdo principal -->
-    <div class="main-content">
-      <!-- Seção da foto -->
-      <div class="photo-section">
-        <div class="photo-frame">
-          <div class="photo-container">
-            <div class="photo"></div>
-          </div>
-        </div>
-        <div class="photo-caption">Cada batida do meu coração tem seu nome.</div>
+    <!-- Seção do Jogo -->
+    <div id="gameSection" class="game-section">
+      <h2 class="game-title">Encaixe os Números</h2>
+
+      <div class="numbers-list">
+        <h3>Números para Encaixar:</h3>
+        <div class="number-group"><strong>5 dígitos:</strong> 63817, 48605</div>
+        <div class="number-group"><strong>4 dígitos:</strong> 2604, 1806</div>
+        <div class="number-group"><strong>3 dígitos:</strong> 735</div>
       </div>
 
-      <!-- Contagem regressiva -->
-      <div class="countdown-section">
-        <h2 class="countdown-title">Nosso Reencontro</h2>
-        <div class="countdown-grid">
-          <div class="time-box">
-            <span class="time-number" id="days">00</span>
-            <div class="time-label">Dias</div>
-          </div>
-          <div class="time-box">
-            <span class="time-number" id="hours">00</span>
-            <div class="time-label">Horas</div>
-          </div>
-          <div class="time-box">
-            <span class="time-number" id="minutes">00</span>
-            <div class="time-label">Min</div>
-          </div>
-          <div class="time-box">
-            <span class="time-number" id="seconds">00</span>
-            <div class="time-label">Seg</div>
-          </div>
-        </div>
+      <div class="grid-container">
+        <!-- Linha 1 -->
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="0" data-col="0"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="0" data-col="1" value="6" readonly></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="0" data-col="2"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="0" data-col="3"></div>
+        <div class="grid-cell blocked"></div>
+
+        <!-- Linha 2 -->
+        <div class="grid-cell blocked"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="1" data-col="1"></div>
+        <div class="grid-cell blocked"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="1" data-col="3" value="8" readonly></div>
+        <div class="grid-cell blocked"></div>
+
+        <!-- Linha 3 -->
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="2" data-col="0" value="1" readonly></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="2" data-col="1"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="2" data-col="2"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="2" data-col="3"></div>
+        <div class="grid-cell blocked"></div>
+
+        <!-- Linha 4 -->
+        <div class="grid-cell blocked"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="3" data-col="1"></div>
+        <div class="grid-cell blocked"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="3" data-col="3"></div>
+        <div class="grid-cell blocked"></div>
+
+        <!-- Linha 5 -->
+        <div class="grid-cell blocked"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="4" data-col="1"></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="4" data-col="2" value="3" readonly></div>
+        <div class="grid-cell"><input type="text" maxlength="1" data-row="4" data-col="3"></div>
+        <div class="grid-cell blocked"></div>
       </div>
+
+      <button id="completeBtn" class="complete-btn">Concluir Jogo</button>
     </div>
 
-    <!-- Seção de música -->
-    <div class="music-section">
-      <h3 class="music-title">Nosso Som</h3>
-      <div class="music-controls">
-        <button id="playBtn" class="play-btn">🎵 Tocar Música</button>
-        <div class="volume-control">
-          <button id="volumeBtn" class="volume-btn">🔊</button>
-          <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="30">
+    <!-- Seção de Vitória -->
+    <div id="victorySection" class="victory-section hidden">
+      <div class="victory-message">🎉 Você Conseguiu! 🎉</div>
+
+      <div class="photo-frame-small">
+        <div class="photo-container-small">
+          <div class="photo-small"></div>
         </div>
       </div>
-    </div>
 
-    <div class="love-message">
-      <p class="love-text">
-        Em cada momento que passamos juntos, descobrimos que nossos corações falam a mesma linguagem.
-        Como Jane Austen escreveu, encontramos em nós dois espíritos verdadeiramente conectados,
-        onde cada sentimento ecoa no outro com uma perfeita harmonia.
-      </p>
+      <h2 class="countdown-title">⏰ Nosso Reencontro ⏰</h2>
+      <div class="countdown-grid">
+        <div class="time-box">
+          <span class="time-number" id="days">00</span>
+          <div class="time-label">Dias</div>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="hours">00</span>
+          <div class="time-label">Horas</div>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="minutes">00</span>
+          <div class="time-label">Min</div>
+        </div>
+        <div class="time-box">
+          <span class="time-number" id="seconds">00</span>
+          <div class="time-label">Seg</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // Contador regressivo
-    function updateCountdown() {
-      const targetDate = new Date('2025-10-18T16:00:00-03:00').getTime();
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-      } else {
-        document.getElementById('days').textContent = '00';
-        document.getElementById('hours').textContent = '00';
-        document.getElementById('minutes').textContent = '00';
-        document.getElementById('seconds').textContent = '00';
-
-        document.querySelector('.countdown-title').textContent = '🎉 Nosso momento chegou!';
-      }
-    }
-
-    // Controles de música
+    // Controles de Música
     const backgroundMusic = document.getElementById('backgroundMusic');
     const playBtn = document.getElementById('playBtn');
     const volumeBtn = document.getElementById('volumeBtn');
     const volumeSlider = document.getElementById('volumeSlider');
-
     let isPlaying = false;
 
-    // Configurar volume inicial
     backgroundMusic.volume = volumeSlider.value / 100;
 
-    // Play/Pause
     playBtn.addEventListener('click', () => {
       if (isPlaying) {
         backgroundMusic.pause();
-        playBtn.textContent = '🎵 Tocar Música';
+        playBtn.textContent = '🎵 Tocar';
         isPlaying = false;
       } else {
         backgroundMusic.play().then(() => {
           playBtn.textContent = '⏸️ Pausar';
           isPlaying = true;
-        }).catch(error => {
-          console.log('Erro ao reproduzir música:', error);
-        });
+        }).catch(error => console.log('Erro ao reproduzir:', error));
       }
     });
 
-    // Controle de volume
     volumeSlider.addEventListener('input', (e) => {
       backgroundMusic.volume = e.target.value / 100;
       updateVolumeIcon(e.target.value);
@@ -792,9 +660,147 @@
       }
     }
 
-    // Inicializar contador
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    // Lógica do Jogo Numerix
+      const inputs = document.querySelectorAll('.grid-cell input');
+      const completeBtn = document.getElementById('completeBtn');
+      const gameSection = document.getElementById('gameSection');
+      const victorySection = document.getElementById('victorySection');
+      const numberGroups = document.querySelectorAll('.number-group');
+
+      // Solução correta do jogo
+      const solution = {
+        '0-0': '2', '0-1': '6', '0-2': '0', '0-3': '4',
+        '1-1': '3', '1-3': '8',
+        '2-0': '1', '2-1': '8', '2-2': '0', '2-3': '6',
+        '3-1': '1', '3-3': '0',
+        '4-1': '7', '4-2': '3', '4-3': '5'
+      };
+
+      // Números agrupados (como aparecem na lista)
+      const numberSets = {
+        "5 dígitos": ["63817", "48605"],
+        "4 dígitos": ["2604", "1806"],
+        "3 dígitos": ["735"]
+      };
+
+      // Atualiza o estado dos grupos riscados
+      function updateNumberGroups() {
+        numberGroups.forEach(group => {
+          const text = group.textContent;
+          const matches = text.match(/\d+/g);
+          if (!matches) return;
+
+          // Verifica se algum número está totalmente presente na grade
+          const completedNumbers = matches.filter(num => {
+            // Verifica se cada dígito do número aparece na grid na sequência correta
+            const digits = num.split("");
+            const inputsArray = Array.from(inputs);
+            const inputValues = inputsArray.map(inp => inp.value || "");
+            return inputValues.join("").includes(num);
+          });
+
+          // Se todos os números deste grupo foram encontrados
+          if (completedNumbers.length === matches.length) {
+            group.classList.add("completed");
+          } else {
+            group.classList.remove("completed");
+          }
+        });
+      }
+
+      // Navegação e validação em tempo real
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const value = e.target.value;
+          const row = e.target.getAttribute('data-row');
+          const col = e.target.getAttribute('data-col');
+          const key = `${row}-${col}`;
+          const correctValue = solution[key];
+
+          // Permitir apenas números
+          if (!/^\d$/.test(value)) {
+            e.target.value = '';
+            e.target.classList.remove("correct", "incorrect");
+            return;
+          }
+
+          // Marcar correto/incorreto
+          if (value === correctValue) {
+            e.target.classList.add("correct");
+            e.target.classList.remove("incorrect");
+          } else {
+            e.target.classList.add("incorrect");
+            e.target.classList.remove("correct");
+          }
+
+          // Avançar para próximo input
+          if (value && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+
+          // Atualizar grupos riscados
+          updateNumberGroups();
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !e.target.value && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
+      });
+
+      // Verificar solução ao concluir
+      completeBtn.addEventListener('click', () => {
+        let correct = true;
+        inputs.forEach(input => {
+          const row = input.getAttribute('data-row');
+          const col = input.getAttribute('data-col');
+          const key = `${row}-${col}`;
+          if (input.value !== solution[key]) {
+            correct = false;
+            input.classList.add("incorrect");
+          }
+        });
+
+        if (correct) {
+          gameSection.classList.add('hidden');
+          victorySection.classList.remove('hidden');
+          startCountdown();
+        } else {
+          alert('❌ Ainda não está correto. Tente novamente!');
+        }
+      });
+
+    // Contagem Regressiva
+    function startCountdown() {
+      function updateCountdown() {
+        // Data alvo: 20 de Novembro de 2025, às 21:20 (Horário de Brasília - GMT-3)
+        const targetDate = new Date('2025-11-20T21:20:00-03:00').getTime();
+        const now = new Date().getTime();
+        const difference = targetDate - now;
+
+        if (difference > 0) {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+          document.getElementById('days').textContent = days.toString().padStart(2, '0');
+          document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+          document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+          document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        } else {
+          document.getElementById('days').textContent = '00';
+          document.getElementById('hours').textContent = '00';
+          document.getElementById('minutes').textContent = '00';
+          document.getElementById('seconds').textContent = '00';
+          document.querySelector('.countdown-title').textContent = '💕 Nosso momento chegou! 💕';
+        }
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
 
     // Tentar reproduzir música automaticamente
     window.addEventListener('load', () => {
